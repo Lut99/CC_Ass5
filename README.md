@@ -74,3 +74,9 @@ THINGS I DID:
   - Reorganised all drawable things into GameObjects
   - The viruses do not bounce but disappear
   - The player can eat good virusses
+  - The good viruses emit green plus particles
+  - There are evil viruses, who catapult themselves at the player
+  - They emit red minus particles
+  - If the evil viruses his the player, he loses points
+  - I have implemented a layer system
+  - Reorganised the storage of the the objects in the GameState object
