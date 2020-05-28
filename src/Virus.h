@@ -3,13 +3,17 @@
 
 #include "MySDL.h"
 #include "Coord.h"
+#include "Unit.h"
 
 /*! A Virus, be carefull
  */
-class Virus
+class Virus: public Unit
 {
 public:
-    Virus()
+    /*! Creates a Virus with default position and speed
+     */
+    Virus() :
+        Unit(10)
     {}
 
     /*! Creates a Virus
@@ -17,32 +21,22 @@ public:
       @param speed start speed
      */
     Virus(Coord pos,Coord speed) :
-        pos{pos}, speed{speed}
+        Unit(pos, speed, 10)
     {}
 
-    /*! Makes a step in time
-      @param mySDL for the size of the window
+    /*! Allows the Virus to handle keyboardinputs, but does nothing as the Virus does not do this
+      @param keyboardState the current state (keys pressed) of the keyboard
      */
-    void step(MySDL& mySDL)
-    {
-        pos+=speed;
-        if (pos.x<0 || pos.x>mySDL.size().x)
-        { speed.x=-speed.x; }
-        if (pos.y<0 || pos.y>mySDL.size().y)
-        { speed.y=-speed.y; }
-    }
+    virtual void keyboard(const Uint8* keyboardState)
+    {}
     
     /*! Draws the Virus
       @param mySDL for the size of the window
      */
-    void draw(MySDL& mySDL)
+    virtual void draw(MySDL& mySDL)
     {
         filledCircleColor(mySDL.renderer(), pos.x, pos.y, radius, color(0,255,0));
     }
-    
-private:
-    static const int radius=10;
-    Coord pos,speed;
 };
 
 #endif
