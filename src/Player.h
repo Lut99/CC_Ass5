@@ -9,38 +9,96 @@
  */
 class Player: public Unit
 {
-public:
-    /*! Creates the Player. Sets the speed to zero
-      @param pos start position
-     */
-    Player(Coord pos) :
-        Unit(pos, Coord(0, 0), 24)
-    {}
+    private:
+        /*! The charge level of the player's inner colour. If that reaches 1, he wins the game!
+         */
+        double charge;
 
-    /*! Handles the keyboard events
-      @param keyboardState the current state (keys pressed) of the keyboard
-     */
-    virtual void keyboard(const Uint8* keyboardState)
-    {
-        double diff_speed=0.5;
-        // for others keys see: https://wiki.libsdl.org/SDL_Scancode
-        if (keyboardState[SDL_SCANCODE_UP])
-            speed.y-=diff_speed;
-        if (keyboardState[SDL_SCANCODE_DOWN])
-            speed.y+=diff_speed;
-        if (keyboardState[SDL_SCANCODE_LEFT])
-            speed.x-=diff_speed;
-        if (keyboardState[SDL_SCANCODE_RIGHT])
-            speed.x+=diff_speed;
-        // if (keyboardState[SDL_SCANCODE_A])
-        speed*=0.95; // reduce speed to create some resistance
-    }
+    public:
+        /*! Creates the Player. Note that it lives on layer 10, and is only really supposed to be overwritten by text and fireworks.
+          @param pos start position
+        */
+        Player(Coord pos) :
+            Unit(pos, Coord(0, 0), UnitType::player, 10),
+            charge(0.0)
+        {}
 
-    /*! Draws the Player
-      @param mySDL for the size of the window
-     */
-    virtual void draw(MySDL& mySDL)
-    {   aacircleColor(mySDL.renderer(), pos.x, pos.y, radius, color(255,255,255)); }
+        /*! Updates the gameobject. Particularly, it allows the object to do
+            something on a keypress, when it touches the walls of the screen
+            or when it touches another object.
+          @param mySDL screen which the Unit lives in. Used to determine the boundries.
+          @param keyboardState state of the keyboard, used to identify key presses.
+          @param objects list of all objects in the game (including this one), used to interact with other objects.
+         */
+        virtual void update(MySDL& mySDL, const Uint8* keyboardState, GameState& objects) {
+            double diff_speed=0.5;
+            // for others keys see: https://wiki.libsdl.org/SDL_Scancode
+            if (keyboardState[SDL_SCANCODE_UP])
+                speed.y-=diff_speed;
+            if (keyboardState[SDL_SCANCODE_DOWN])
+                speed.y+=diff_speed;
+            if (keyboardState[SDL_SCANCODE_LEFT])
+                speed.x-=diff_speed;
+            if (keyboardState[SDL_SCANCODE_RIGHT])
+                speed.x+=diff_speed;
+            // if (keyboardState[SDL_SCANCODE_A])
+            speed*=0.95; // reduce speed to create some resistance
+
+            // Apply the computed speed
+            pos+=speed;
+            if (pos.x < this->radius || pos.x > mySDL.size().x - this->radius)
+            { speed.x=-speed.x; }
+            if (pos.y < this->radius || pos.y > mySDL.size().y - this->radius)
+            { speed.y=-speed.y; }
+
+            // Eat other units
+            for (auto& obj : objects.get_objects()) {
+                // Skip all non-unit objects
+                if (obj->type != GameObjectType::unit) { continue; }
+
+                // Cast to unit
+                Unit* unit = (Unit*) obj;
+
+                // For all non-virus objects
+                if (unit->unit_type == UnitType::virus) {
+                    if (this->distance_to(*unit) <= this->radius + unit->radius) {
+                        // They touched
+                        this->charge += 0.05;
+                        objects.despawn(unit);
+                    }
+                }
+            }
+        }
+
+        /*! Substracts charge from the player when it is hit
+          @param damage the amount of charge to subtract
+         */
+        void hit(double damage) {
+            this->charge -= damage;
+        }
+
+        /*! Draws the Player
+          @param mySDL for the size of the window
+        */
+        virtual void draw(MySDL& mySDL) const {
+            // Chose the color based on the charge
+            Color c;
+            if (charge >= 0) {
+                c = color(0, 255 * this->charge, 0);
+            } else {
+                c = color(255 * (-this->charge), 0, 0);
+            }
+
+            // Draw the player
+            filledCircleColor(mySDL.renderer(), this->pos.x, this->pos.y, this->radius, c);
+            aacircleColor(mySDL.renderer(), pos.x, pos.y, radius, color(255,255,255));
+        }
+
+        /*! Returns the charge the player has collected
+         */
+        double get_charge() const {
+            return this->charge;
+        }
 };
 
 #endif

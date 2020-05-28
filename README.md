@@ -67,4 +67,10 @@ Bas Terwijn <<b.terwijn@uva.nl>>
 
 
 ## Description of extension by student
-My extension ...
+
+THINGS I DID:
+  - Reorganised updates / draw
+  - Reorganised virus & player into Units
+  - Reorganised all drawable things into GameObjects
+  - The viruses do not bounce but disappear
+  - The player can eat good virusses

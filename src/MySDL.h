@@ -1,6 +1,7 @@
 #ifndef MYSQL_INCLUDED
 #define MYSQL_INCLUDED
 
+#include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include "Coord.h"
