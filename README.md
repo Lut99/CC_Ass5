@@ -119,6 +119,7 @@ And now for the promised list of features:
 #### Animations
   - A win screen has been added
   - A defeat screen has been added
+  - The player colours green proportional to the positive Charge collected; similarly, he / she colours red equal to the negative Charge
   - Good virusses emit a trail of green plusses
   - Evil virusses emit a trail of red minusses
   - Evil virusses have an erratic shake animation
