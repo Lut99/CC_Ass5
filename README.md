@@ -84,6 +84,8 @@ THINGS I DID:
   - Evil virusses convert & bounce off good virusses
   - Good virusses bounce off other good virusses
   - Evil virusses have slightly different acceleration to avoid clustering
+  - Winning text (alpha change not yet working)
+  - Small bugs: very rarely all green dissappear; lifetime <= 0 for zombified green virusses
 
 THINGS TO ADD:
   - Green virusses slightly avoid you as you build more charge
