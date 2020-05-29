@@ -1,10 +1,14 @@
 /* EVIL VIRUS.h
- *   by Anonymous
+ *   by Tim Müller (11774606)
+ * 
+ * C++ ASSIGNMENT 5 (VIRUS GAME)
+ *   > build on KDE Neon (Ubuntu 18.04) using GCC 7.5.0
+ *   > Note: requires libsdl2-ttf-dev to be installed
  *
  * Created:
  *   5/29/2020, 12:00:30 AM
  * Last edited:
- *   5/29/2020, 4:22:41 PM
+ *   5/29/2020, 11:07:37 PM
  * Auto updated?
  *   Yes
  *
@@ -122,7 +126,7 @@ class EvilVirus: public Unit
 
                     // Only if it's a good virus and we are not yet on our max, convert to an evil virus
                     if (unit->unit_type == UnitType::virus && objects.get_evil_count() < objects.max_evil_count) {
-                        objects.spawn((GameObject*) new EvilVirus(unit->pos, unit->speed, this->dmg, this->acc));
+                        objects.spawn((GameObject*) new EvilVirus(unit->pos, unit->speed, this->acc, this->lifetime));
 
                         // Remove the other unit
                         objects.despawn((GameObject*) unit);

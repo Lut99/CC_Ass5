@@ -1,10 +1,14 @@
 /* FLAVOUR TEXT.h
- *   by Anonymous
+ *   by Tim Müller (11774606)
+ * 
+ * C++ ASSIGNMENT 5 (VIRUS GAME)
+ *   > build on KDE Neon (Ubuntu 18.04) using GCC 7.5.0
+ *   > Note: requires libsdl2-ttf-dev to be installed
  *
  * Created:
  *   5/29/2020, 3:27:27 PM
  * Last edited:
- *   5/29/2020, 4:25:58 PM
+ *   5/29/2020, 8:14:39 PM
  * Auto updated?
  *   Yes
  *
@@ -33,7 +37,7 @@ class FlavourText: public Text {
           @param lifetime the number of frames it takes before dissappearing altogether
          */
         FlavourText(MySDL& mySDL, std::string message, double speed = 2.5, unsigned int lifetime = 45)
-            : Text(mySDL, message, "../Raleway-Regular.ttf", 24, color(255, 255, 255)),
+            : Text(mySDL, message, "../Raleway-Regular.ttf", 24, SDL_Color({255, 255, 255})),
             speed(speed),
             lifetime(lifetime)
         {}
@@ -46,7 +50,7 @@ class FlavourText: public Text {
           @param lifetime the number of frames it takes before dissappearing altogether
          */
         FlavourText(MySDL& mySDL, Coord position, std::string message, double speed = 2.5, unsigned int lifetime = 45)
-            : Text(mySDL, position, message, "../Raleway-Regular.ttf", 24, color(255, 255, 255)),
+            : Text(mySDL, position, message, "../Raleway-Regular.ttf", 24, SDL_Color({255, 255, 255})),
             speed(speed),
             lifetime(lifetime)
         {}

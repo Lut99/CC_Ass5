@@ -1,10 +1,14 @@
 /* GAME STATE.h
- *   by Anonymous
+ *   by Tim Müller (11774606)
+ * 
+ * C++ ASSIGNMENT 5 (VIRUS GAME)
+ *   > build on KDE Neon (Ubuntu 18.04) using GCC 7.5.0
+ *   > Note: requires libsdl2-ttf-dev to be installed
  *
  * Created:
  *   5/28/2020, 11:03:28 PM
  * Last edited:
- *   5/29/2020, 1:44:33 PM
+ *   5/29/2020, 11:07:36 PM
  * Auto updated?
  *   Yes
  *
@@ -49,10 +53,6 @@ class GameState {
         std::vector<GameObject*> to_remove;
         /*! Represents the change in good virusses before update() is called
          */
-        unsigned int d_good_virus_count;
-        /*! Represents the change in evil virusses before update() is called
-         */
-        unsigned int d_evil_virus_count;
     
     public:
         /*! Stores the maximum number of good virusses allowed in the game
@@ -69,8 +69,6 @@ class GameState {
         GameState(const unsigned int max_good_count, const unsigned int max_evil_count) :
             good_virus_count(0),
             evil_virus_count(0),
-            d_good_virus_count(0),
-            d_evil_virus_count(0),
             max_good_count(max_good_count),
             max_evil_count(max_evil_count)
         {}
@@ -120,10 +118,8 @@ class GameState {
             if (obj->type == GameObjectType::unit) {
                 Unit* unit = (Unit*) obj;
                 if (unit->unit_type == UnitType::virus) {
-                    // this->d_good_virus_count++;
                     this->good_virus_count++;
                 } else if (unit->unit_type == UnitType::evil_virus) {
-                    // this->d_evil_virus_count++;
                     this->evil_virus_count++;
                 }
             }
@@ -140,10 +136,8 @@ class GameState {
             if (obj->type == GameObjectType::unit) {
                 Unit* unit = (Unit*) obj;
                 if (unit->unit_type == UnitType::virus) {
-                    // this->d_good_virus_count--;
                     this->good_virus_count--;
                 } else if (unit->unit_type == UnitType::evil_virus) {
-                    // this->d_evil_virus_count--;
                     this->evil_virus_count--;
                 }
             }
@@ -171,19 +165,13 @@ class GameState {
             // Next, add all elements that need to be added
             this->objects.insert(this->objects.end(), this->to_add.begin(), this->to_add.end());
 
-            // Then, update the two counters and reset them
-            this->good_virus_count += this->d_good_virus_count;
-            this->evil_virus_count += this->d_evil_virus_count;
-
             // Finally, reset all temporary values
             this->to_add.clear();
             this->to_remove.clear();
-            this->d_good_virus_count = 0;
-            this->d_evil_virus_count = 0;
 
             // As a bonus, sort the list based on layer
             std::sort(this->objects.begin(), this->objects.end(), [](GameObject* obj1, GameObject* obj2){
-                return obj1->get_layer() < obj2->get_layer();
+                return obj1->get_layer() > obj2->get_layer();
             });
         }
 

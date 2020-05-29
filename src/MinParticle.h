@@ -1,10 +1,14 @@
 /* MIN PARTICLE.h
- *   by Anonymous
+ *   by Tim Müller (11774606)
+ * 
+ * C++ ASSIGNMENT 5 (VIRUS GAME)
+ *   > build on KDE Neon (Ubuntu 18.04) using GCC 7.5.0
+ *   > Note: requires libsdl2-ttf-dev to be installed
  *
  * Created:
  *   5/28/2020, 11:59:00 PM
  * Last edited:
- *   5/29/2020, 1:15:01 AM
+ *   5/29/2020, 11:07:36 PM
  * Auto updated?
  *   Yes
  *

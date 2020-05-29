@@ -3,11 +3,12 @@
  * 
  * C++ ASSIGNMENT 5 (VIRUS GAME)
  *   > build on KDE Neon (Ubuntu 18.04) using GCC 7.5.0
+ *   > Note: requires libsdl2-ttf-dev to be installed
  *
  * Created:
  *   5/28/2020, 4:41:23 PM
  * Last edited:
- *   5/29/2020, 1:02:19 PM
+ *   5/29/2020, 11:07:27 PM
  * Auto updated?
  *   Yes
  *

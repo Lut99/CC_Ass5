@@ -11,6 +11,7 @@
 #include "Virus.h"
 #include "EvilVirus.h"
 #include "EndText.h"
+#include "EndAnimation.h"
 
 const int SCREEN_FPS = 60;
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
@@ -59,7 +60,7 @@ extern "C" int main(int argc, char* argv[])
         SDL_RenderClear(mySDL.renderer()); // clear graphics window
 
         // Draw all objects
-        for (auto& obj : state.get_objects()) {
+        for (GameObject* obj : state.get_objects()) {
             obj->draw(mySDL);
         }
 
@@ -108,10 +109,12 @@ extern "C" int main(int argc, char* argv[])
         if (!won && !lost) {
             Player* player = (Player*) state.get_player();
             if (player->get_charge() >= 100) {
-                state.add(new EndText(mySDL, true));
+                state.add((GameObject*) new EndText(mySDL, true));
+                state.add((GameObject*) new EndAnimation(true));
                 won = true;
             } else if (player->get_charge() <= -100) {
-                state.add(new EndText(mySDL, false));
+                state.add((GameObject*) new EndText(mySDL, false));
+                state.add((GameObject*) new EndAnimation(false));
                 lost = true;
             }
         }

@@ -1,10 +1,14 @@
 /* PARTICLE.h
- *   by Anonymous
+ *   by Tim Müller (11774606)
+ * 
+ * C++ ASSIGNMENT 5 (VIRUS GAME)
+ *   > build on KDE Neon (Ubuntu 18.04) using GCC 7.5.0
+ *   > Note: requires libsdl2-ttf-dev to be installed
  *
  * Created:
  *   5/28/2020, 10:15:23 PM
  * Last edited:
- *   5/29/2020, 3:57:13 PM
+ *   5/29/2020, 11:07:36 PM
  * Auto updated?
  *   Yes
  *
@@ -22,9 +26,10 @@
 /*! Lists all the possible particle types
  */
 enum class ParticleType {
-    fireworks,
     plus,
-    min
+    min,
+    fireworks,
+    rain
 };
 
 /*! A class for small, fleeting and non-interactable objects.
@@ -42,7 +47,7 @@ class Particle: public GameObject {
           @param lifetime the number of frames the particle gets to live
           @param layer the layer in which to order the GameObjects. Higher means it will be drawn on top of lower layers.
          */
-        Particle(ParticleType type, double size = 5, unsigned int lifetime = 60, unsigned int layer = 0)
+        Particle(ParticleType type, double size = 5, unsigned int lifetime = 60, int layer = 0)
             : GameObject(GameObjectType::particle, layer),
             size(size),
             lifetime(lifetime),
@@ -57,7 +62,7 @@ class Particle: public GameObject {
           @param lifetime the number of frames the particle gets to live
           @param layer the layer in which to order the GameObjects. Higher means it will be drawn on top of lower layers.
          */
-        Particle(Coord position, ParticleType type, double size = 5, unsigned int lifetime = 60, unsigned int layer = 0)
+        Particle(Coord position, ParticleType type, double size = 5, unsigned int lifetime = 60, int layer = 0)
             : GameObject(position, GameObjectType::particle, layer),
             size(size),
             lifetime(lifetime),
@@ -73,7 +78,7 @@ class Particle: public GameObject {
           @param lifetime the number of frames the particle gets to live
           @param layer the layer in which to order the GameObjects. Higher means it will be drawn on top of lower layers.
          */
-        Particle(Coord position, Coord speed, ParticleType type, double size = 5, unsigned int lifetime = 60, unsigned int layer = 0)
+        Particle(Coord position, Coord speed, ParticleType type, double size = 5, unsigned int lifetime = 60, int layer = 0)
             : GameObject(position, GameObjectType::particle, layer),
             speed(speed),
             size(size),
@@ -94,10 +99,6 @@ class Particle: public GameObject {
         virtual void update(MySDL& mySDL, const Uint8*, GameState& objects) {
             // Apply the internal speed
             this->pos += this->speed;
-            if (this->pos.x<0 || this->pos.x>mySDL.size().x)
-            { this->speed.x=-this->speed.x; }
-            if (this->pos.y<0 || this->pos.y>mySDL.size().y)
-            { this->speed.y=-this->speed.y; }
 
             // Decrease the lifetime
             this->lifetime--;

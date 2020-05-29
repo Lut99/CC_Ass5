@@ -1,10 +1,14 @@
 /* END TEXT.h
- *   by Anonymous
+ *   by Tim Müller (11774606)
+ * 
+ * C++ ASSIGNMENT 5 (VIRUS GAME)
+ *   > build on KDE Neon (Ubuntu 18.04) using GCC 7.5.0
+ *   > Note: requires libsdl2-ttf-dev to be installed
  *
  * Created:
  *   5/29/2020, 4:24:37 PM
  * Last edited:
- *   5/29/2020, 5:15:13 PM
+ *   5/29/2020, 11:07:36 PM
  * Auto updated?
  *   Yes
  *
@@ -20,14 +24,17 @@
 #include <string>
 
 #include "Text.h"
+#include "MySDL.h"
 
 class EndText: public Text {
     private:
         std::string msg;
-        Color colour;
+        SDL_Color colour;
         double alpha;
-        double colour_speed;
         bool alpha_up;
+
+
+        const double colour_speed = 2;
 
     public:
         /*! Creates a new FlavourText object with default position.
@@ -38,14 +45,13 @@ class EndText: public Text {
             : Text(
                 mySDL,
                 Coord(mySDL.size().x / 2, mySDL.size().y / 2),
-                "",
+                "PLACEHOLDER",
                 "../Raleway-Regular.ttf",
                 72,
-                color(0, 0, 0, 0)),
+                SDL_Color({0, 0, 0})),
             msg(won ? "You won!!!" : "You lost..."),
-            colour(won ? color(245, 155, 0) : color(86, 0, 245)),
+            colour(won ? SDL_Color({245, 155, 0}) : SDL_Color({86, 0, 245})),
             alpha(0),
-            colour_speed(.25),
             alpha_up(true)
         {}
 
@@ -55,28 +61,22 @@ class EndText: public Text {
           @param objects list of all objects in the game (including this one), used to interact with other objects.
          */
         virtual void update(MySDL& mySDL, const Uint8*, GameState& objects) {
-            // Fetch the colour as lsit
-            Uint8* c_list = (Uint8*) &(this->colour);
-
-            Uint8 r = c_list[0] * (this->alpha / 255);
-            Uint8 g = c_list[1] * (this->alpha / 255);
-            Uint8 b = c_list[2] * (this->alpha / 255);
-
-            // Create a new render with that colour
-            this->initialize_texture(mySDL, this->msg, color(r, g, b));
-
-            // Update the alpha
+            // Bring the text in as long as we still have alpha to go
             if (alpha_up) {
+                // Update the alpha in the stored colour
+                SDL_Color alpha_colour(this->colour);
+                alpha_colour.r *= this->alpha / 255.0;
+                alpha_colour.g *= this->alpha / 255.0;
+                alpha_colour.b *= this->alpha / 255.0;
+
+                // Create a new render with that colour
+                this->initialize_texture(mySDL, this->msg, alpha_colour);
+
+                // Update the alpha
                 this->alpha += this->colour_speed;
-                if (this->alpha >= 255.0) {
+                if (this->alpha > 255.0) {
                     this->alpha = 255.0;
                     this->alpha_up = false;
-                }
-            } else {
-                this->alpha -= this->colour_speed;
-                if (this->alpha <= 0.0) {
-                    this->alpha = 0.0;
-                    this->alpha_up = true;
                 }
             }
         }

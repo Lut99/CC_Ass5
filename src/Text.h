@@ -1,10 +1,14 @@
 /* TEXT.h
- *   by Anonymous
+ *   by Tim Müller (11774606)
+ * 
+ * C++ ASSIGNMENT 5 (VIRUS GAME)
+ *   > build on KDE Neon (Ubuntu 18.04) using GCC 7.5.0
+ *   > Note: requires libsdl2-ttf-dev to be installed
  *
  * Created:
  *   5/29/2020, 2:48:57 PM
  * Last edited:
- *   5/29/2020, 4:58:11 PM
+ *   5/29/2020, 11:07:37 PM
  * Auto updated?
  *   Yes
  *
@@ -38,8 +42,8 @@ class Text: public GameObject {
           @param font_size the size of the font
           @param colour the colour to render in
          */
-        Text(MySDL& mySDL, std::string message, std::string font_family, unsigned int font_size, Color colour)
-            : GameObject(GameObjectType::text),
+        Text(MySDL& mySDL, std::string message, std::string font_family, unsigned int font_size, SDL_Color colour)
+            : GameObject(GameObjectType::text, 20),
             texture(nullptr),
             font(TTF_OpenFont(font_family.c_str(), font_size))
         {
@@ -58,7 +62,7 @@ class Text: public GameObject {
           @param font_size the size of the font
           @param colour the colour to render in
          */
-        Text(MySDL& mySDL, Coord position, std::string message, std::string font_family, unsigned int font_size, Color colour)
+        Text(MySDL& mySDL, Coord position, std::string message, std::string font_family, unsigned int font_size, SDL_Color colour)
             : GameObject(position, GameObjectType::text),
             texture(nullptr),
             font(TTF_OpenFont(font_family.c_str(), font_size))
@@ -104,23 +108,16 @@ class Text: public GameObject {
         /*! Initializes the texture for the text. Can be used to change the text displayed.
           @param message the message to draw.
          */
-        void initialize_texture(MySDL& mySDL, std::string message, Color colour) {
+        void initialize_texture(MySDL& mySDL, std::string message, SDL_Color colour) {
             // If there is any texture, remove it first
             if (this->texture != nullptr) {
                 SDL_DestroyTexture(this->texture);
             }
 
-            // Create a SDL_Color from Color
-            Uint8* c_list = (Uint8*) &colour;
-            SDL_Color sdl_colour;
-            sdl_colour.r = c_list[0];
-            sdl_colour.g = c_list[1];
-            sdl_colour.b = c_list[2];
-            sdl_colour.a = c_list[3];
-
-            std::cout << "Colour: " << ((int) sdl_colour.r) << ", " << ((int) sdl_colour.g) << ", " << ((int) sdl_colour.b) << ", " << ((int) sdl_colour.a) << std::endl;
-
-            SDL_Surface* surface = TTF_RenderText_Solid(this->font, message.c_str(), sdl_colour);
+            SDL_Surface* surface = TTF_RenderText_Solid(this->font, message.c_str(), colour);
+            if (surface == nullptr) {
+                throw std::runtime_error("Could not render text: " + std::string(SDL_GetError()));
+            }
             this->texture = SDL_CreateTextureFromSurface(mySDL.renderer(), surface);
             
             // Store the width and height in the rectangle

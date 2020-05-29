@@ -1,10 +1,14 @@
 /* GAME OBJECT.h
- *   by Anonymous
+ *   by Tim Müller (11774606)
+ * 
+ * C++ ASSIGNMENT 5 (VIRUS GAME)
+ *   > build on KDE Neon (Ubuntu 18.04) using GCC 7.5.0
+ *   > Note: requires libsdl2-ttf-dev to be installed
  *
  * Created:
  *   5/28/2020, 9:34:54 PM
  * Last edited:
- *   5/29/2020, 1:02:10 PM
+ *   5/29/2020, 11:07:36 PM
  * Auto updated?
  *   Yes
  *
@@ -28,7 +32,8 @@
 enum class GameObjectType {
     text,
     unit,
-    particle
+    particle,
+    end_animation
 };
 
 /*! The most basic level of the object tree
@@ -42,7 +47,8 @@ class GameObject {
           @param layer the layer in which to order the GameObjects. Higher means it will be drawn on top of lower layers.
          */
         GameObject(GameObjectType type, int layer = 0) :
-            type(type)
+            type(type),
+            layer(layer)
         {}
 
         /*! Creates a GameObject with given position.
@@ -52,7 +58,8 @@ class GameObject {
          */
         GameObject(Coord position, GameObjectType type, int layer = 0) :
             pos(position),
-            type(type)
+            type(type),
+            layer(layer)
         {}
     
     public:
@@ -75,7 +82,7 @@ class GameObject {
 
         /* Get the layer from the GameObject.
          */
-        int get_layer() const {
+        virtual int get_layer() const {
             return this->layer;
         }
 };

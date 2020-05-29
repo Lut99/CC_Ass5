@@ -57,10 +57,22 @@ class Player: public Unit
 
             // Apply the computed speed
             pos+=speed;
-            if (pos.x < this->radius || pos.x > mySDL.size().x - this->radius)
-            { speed.x=-speed.x; }
-            if (pos.y < this->radius || pos.y > mySDL.size().y - this->radius)
-            { speed.y=-speed.y; }
+
+            // Bounce off the sides, and make sure we stay within the sides
+            if (pos.x < this->radius) {
+                speed.x=-speed.x;
+                pos.x = this->radius;
+            } else if (pos.x > mySDL.size().x - this->radius) {
+                speed.x = -speed.x;
+                pos.x = mySDL.size().x - this->radius;
+            }
+            if (pos.y < this->radius) {
+                speed.y=-speed.y;
+                pos.y = this->radius;
+            } else if (pos.y > mySDL.size().y - this->radius) {
+                speed.y = -speed.y;
+                pos.y = mySDL.size().y - this->radius;
+            }
 
             // Eat other units
             for (auto& obj : objects.get_objects()) {
@@ -89,6 +101,10 @@ class Player: public Unit
                     } else {
                         to_disp += "/-100";
                     }
+
+                    // Keep charge in 100
+                    if (this->charge > 100) { this->charge = 100; }
+                    else if (this->charge < -100) { this->charge = -100; }
 
                     // Spawn such an object
                     objects.spawn((GameObject*) new FlavourText(mySDL, this->pos, to_disp));
