@@ -15,6 +15,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/feature_tests.cxx"
   "../cmake/sdl2/FindSDL2.cmake"
   "../cmake/sdl2/FindSDL2_gfx.cmake"
+  "../cmake/sdl2/FindSDL2_ttf.cmake"
   "/usr/share/cmake-3.10/Modules/CMakeCCompiler.cmake.in"
   "/usr/share/cmake-3.10/Modules/CMakeCCompilerABI.c"
   "/usr/share/cmake-3.10/Modules/CMakeCInformation.cmake"

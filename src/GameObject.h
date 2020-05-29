@@ -4,7 +4,7 @@
  * Created:
  *   5/28/2020, 9:34:54 PM
  * Last edited:
- *   5/29/2020, 1:26:57 AM
+ *   5/29/2020, 1:02:10 PM
  * Auto updated?
  *   Yes
  *
@@ -35,7 +35,6 @@ enum class GameObjectType {
  */
 class GameObject {
     protected:
-        Coord pos;
         int layer;
     
         /*! Creates a GameObject with default position.
@@ -57,6 +56,7 @@ class GameObject {
         {}
     
     public:
+        Coord pos;
         const GameObjectType type;
 
         /*! Updates the gameobject. Particularly, it allows the object to do

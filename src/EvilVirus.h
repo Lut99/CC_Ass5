@@ -4,7 +4,7 @@
  * Created:
  *   5/29/2020, 12:00:30 AM
  * Last edited:
- *   5/29/2020, 1:29:49 AM
+ *   5/29/2020, 4:22:41 PM
  * Auto updated?
  *   Yes
  *
@@ -18,6 +18,7 @@
 #define EVILVIRUS_INCLUDED
 
 #include <iostream>
+#include <map>
 
 #include "MySDL.h"
 #include "Utils.h"
@@ -36,29 +37,43 @@ class EvilVirus: public Unit
         unsigned int frame_count;
         double dmg;
         double acc;
+        unsigned int lifetime;
 
     public:
         /*! Creates a EvilVirus with default position
-          @param damage the amount of charge that is deducted from the player when it is hit by an EvilVirus
           @param acceleration the amount the evil virus will accelerate to the player each turn
+          @param lifetime number of frames that the virus behaves intelligently before it stops actively following the player
          */
-        EvilVirus(double damage = 2, double acceleration = 0.5) :
+        EvilVirus(double acceleration = 0.5, unsigned int lifetime = 600) :
             Unit(UnitType::evil_virus, 5),
             frame_count(0),
-            dmg(damage),
-            acc(acceleration)
+            acc(acceleration * (rand_0_1() * 0.2 + 0.9)),
+            lifetime(lifetime)
         {}
 
         /*! Creates an EvilVirus
           @param pos start position
-          @param damage the amount of charge that is deducted from the player when it is hit by an EvilVirus
           @param acceleration the amount the evil virus will accelerate to the player each turn
+          @param lifetime number of frames that the virus behaves intelligently before it stops actively following the player
          */
-        EvilVirus(Coord pos, double damage = 2, double acceleration = 0.5) :
-            Unit(pos, Coord(0, 0), UnitType::virus, 5),
+        EvilVirus(Coord pos, double acceleration = 0.5, unsigned int lifetime = 600) :
+            Unit(pos, Coord(0, 0), UnitType::evil_virus, 5),
             frame_count(0),
-            dmg(damage),
-            acc(acceleration)
+            acc(acceleration * (rand_0_1() * 0.2 + 0.9)),
+            lifetime(lifetime)
+        {}
+
+        /*! Creates an EvilVirus, but with a certain starting speed and direction other than 0, 0.
+          @param pos start position
+          @param speed the initial speed and direction of the virus
+          @param acceleration the amount the evil virus will accelerate to the player each turn
+          @param lifetime number of frames that the virus behaves intelligently before it stops actively following the player
+         */
+        EvilVirus(Coord pos, Coord speed, double acceleration = 0.5, unsigned int lifetime = 600) :
+            Unit(pos, speed, UnitType::evil_virus, 5),
+            frame_count(0),
+            acc(acceleration * (rand_0_1() * 0.2 + 0.9)),
+            lifetime(lifetime)
         {}
 
         /*! Updates the evil virus. Note that this virus will actively seek out
@@ -72,30 +87,25 @@ class EvilVirus: public Unit
         virtual void update(MySDL& mySDL, const Uint8*, GameState& objects) {
             Player* player = (Player*) objects.get_player();
 
-            // Get the directional vector pointing towards the player
-            Coord vec = this->point_to(*((Unit*) player));
-            
-            // Add that vector to the internal vector
-            this->speed.x += vec.x * this->acc;
-            this->speed.y += vec.y * this->acc;
+            // Only target & slow down if we are alive
+            if (this->frame_count < this->lifetime) {
+                // Get the directional vector pointing towards the player
+                Coord vec = this->point_to(*((Unit*) player));
+                
+                // Add that vector to the internal vector
+                this->speed.x += vec.x * this->acc;
+                this->speed.y += vec.y * this->acc;
 
-            // However, to aid the virus, we give it the same drag as the player
-            this->speed.x *= 0.95;
-            this->speed.y *= 0.95;
+                // However, to aid the virus, we give it the same drag as the player
+                this->speed.x *= 0.95;
+                this->speed.y *= 0.95;
+            }
 
             // Apply the speed
             pos+=speed;
 
-            // Apply penalty to the player and despawn when we hit the edge
-            if (this->distance_to(*((Unit*) player)) <= player->radius + this->radius) {
-                // Deal damage
-                player->hit(this->dmg);
-
-                // Despawn ourselves
-                objects.despawn(this);
-            }
-
             // If we hit another friendly virus, despawn us both
+            #define LOG(MIDDLE) std::cout << MIDDLE << std::endl
             for (GameObject* obj : objects.get_objects()) {
                 // Skip all non-units & players
                 if (obj->type != GameObjectType::unit || ((Unit*) obj)->unit_type == UnitType::player) { continue; }
@@ -103,9 +113,20 @@ class EvilVirus: public Unit
                 // Compute the distance to the virus - but make sure we aren't computing a distance to ourselves
                 Unit* unit = (Unit*) obj;
                 if (this != unit && this->distance_to(*unit) <= this->radius + unit->radius) {
-                    // Despawn 'em
-                    objects.despawn(this);
-                    objects.despawn(unit);
+                    // Make the virusses bounce off of each other
+
+                    // Compute the normal (quick 'n' dirty) and set it as our own speed
+                    Coord normal = unit->point_to(*this);
+                    this->speed.x += normal.x;
+                    this->speed.y += normal.y;
+
+                    // Only if it's a good virus and we are not yet on our max, convert to an evil virus
+                    if (unit->unit_type == UnitType::virus && objects.get_evil_count() < objects.max_evil_count) {
+                        objects.spawn((GameObject*) new EvilVirus(unit->pos, unit->speed, this->dmg, this->acc));
+
+                        // Remove the other unit
+                        objects.despawn((GameObject*) unit);
+                    }
                 }
             }
 
@@ -116,7 +137,7 @@ class EvilVirus: public Unit
             }
 
             // Once every particle_interval frames, spawn a min particle
-            if (frame_count == particle_interval) {
+            if (frame_count % particle_interval == 0) {
                 // Generate a randomized, normalized speed
                 Coord speed(rand_0_1(), rand_0_1());
                 double len = sqrt(speed.x * speed.x + speed.y * speed.y);
@@ -127,14 +148,26 @@ class EvilVirus: public Unit
             }
 
             // Increment the frame_count but keep it bounded
-            frame_count = (frame_count + 1) % (particle_interval + 1);
+            frame_count++;
         }
         
         /*! Draws the Virus
         @param mySDL for the size of the window
         */
         virtual void draw(MySDL& mySDL) const {
-            filledCircleColor(mySDL.renderer(), pos.x, pos.y, radius, color(255,0,0));
+            // Add up to 2 randomly to pos.x and / or pos.y to create erratic shaking
+            Coord animated_pos = this->pos;
+
+            animated_pos.x += rand_0_1() * 5;
+            animated_pos.y += rand_0_1() * 5;
+            
+            // Decrease red if the virus isn't alive anymore
+            int red = 255;
+            if (this->frame_count >= this->lifetime) {
+                red /= 2;
+            }
+
+            filledCircleColor(mySDL.renderer(), animated_pos.x, animated_pos.y, this->radius, color(red,0,0));
         }
 };
 

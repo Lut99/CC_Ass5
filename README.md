@@ -80,3 +80,13 @@ THINGS I DID:
   - If the evil viruses his the player, he loses points
   - I have implemented a layer system
   - Reorganised the storage of the the objects in the GameState object
+  - Erratic Evil Virus animation
+  - Evil virusses convert & bounce off good virusses
+  - Good virusses bounce off other good virusses
+  - Evil virusses have slightly different acceleration to avoid clustering
+
+THINGS TO ADD:
+  - Green virusses slightly avoid you as you build more charge
+  - Winning text & fireworks
+  - Losing animation
+  - Float text when charge gained / lost

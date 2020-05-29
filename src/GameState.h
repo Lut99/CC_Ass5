@@ -4,7 +4,7 @@
  * Created:
  *   5/28/2020, 11:03:28 PM
  * Last edited:
- *   5/29/2020, 1:31:56 AM
+ *   5/29/2020, 1:44:33 PM
  * Auto updated?
  *   Yes
  *
@@ -18,6 +18,7 @@
 #ifndef GAMESTATE_INCLUDED
 #define GAMESTATE_INCLUDED
 
+#include <iostream>
 #include <vector>
 #include <map>
 #include <algorithm>
@@ -54,14 +55,24 @@ class GameState {
         unsigned int d_evil_virus_count;
     
     public:
+        /*! Stores the maximum number of good virusses allowed in the game
+         */
+        const unsigned int max_good_count;
+        /*! Stores the maximum number of evil virusses allowed in the game
+         */
+        const unsigned int max_evil_count;
+
+
         /*! Creates a new GameState object. All lists will be empty, and all
             values will be 0.
          */
-        GameState() :
+        GameState(const unsigned int max_good_count, const unsigned int max_evil_count) :
             good_virus_count(0),
             evil_virus_count(0),
             d_good_virus_count(0),
-            d_evil_virus_count(0)
+            d_evil_virus_count(0),
+            max_good_count(max_good_count),
+            max_evil_count(max_evil_count)
         {}
 
         /*! Destructor for the GameState obejct. Will delete all pointers in
@@ -109,9 +120,11 @@ class GameState {
             if (obj->type == GameObjectType::unit) {
                 Unit* unit = (Unit*) obj;
                 if (unit->unit_type == UnitType::virus) {
-                    this->d_good_virus_count++;
+                    // this->d_good_virus_count++;
+                    this->good_virus_count++;
                 } else if (unit->unit_type == UnitType::evil_virus) {
-                    this->d_evil_virus_count++;
+                    // this->d_evil_virus_count++;
+                    this->evil_virus_count++;
                 }
             }
         }
@@ -123,13 +136,15 @@ class GameState {
         void despawn(GameObject* obj) {
             this->to_remove.push_back(obj);
 
-            // Also update good or bad counters
+            // Already apply the counters
             if (obj->type == GameObjectType::unit) {
                 Unit* unit = (Unit*) obj;
                 if (unit->unit_type == UnitType::virus) {
-                    this->d_good_virus_count--;
+                    // this->d_good_virus_count--;
+                    this->good_virus_count--;
                 } else if (unit->unit_type == UnitType::evil_virus) {
-                    this->d_evil_virus_count--;
+                    // this->d_evil_virus_count--;
+                    this->evil_virus_count--;
                 }
             }
         }

@@ -3,7 +3,9 @@
 
 CMakeFiles/VirusGame.dir/VirusGame.cpp.o
  /home/lut_99/UvA/C++/Ass5/src/Coord.h
+ /home/lut_99/UvA/C++/Ass5/src/EndText.h
  /home/lut_99/UvA/C++/Ass5/src/EvilVirus.h
+ /home/lut_99/UvA/C++/Ass5/src/FlavourText.h
  /home/lut_99/UvA/C++/Ass5/src/GameObject.h
  /home/lut_99/UvA/C++/Ass5/src/GameState.h
  /home/lut_99/UvA/C++/Ass5/src/MinParticle.h
@@ -11,6 +13,7 @@ CMakeFiles/VirusGame.dir/VirusGame.cpp.o
  /home/lut_99/UvA/C++/Ass5/src/Particle.h
  /home/lut_99/UvA/C++/Ass5/src/Player.h
  /home/lut_99/UvA/C++/Ass5/src/PlusParticle.h
+ /home/lut_99/UvA/C++/Ass5/src/Text.h
  /home/lut_99/UvA/C++/Ass5/src/Unit.h
  /home/lut_99/UvA/C++/Ass5/src/Utils.h
  /home/lut_99/UvA/C++/Ass5/src/Virus.h

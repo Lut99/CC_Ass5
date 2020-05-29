@@ -7,7 +7,7 @@
  * Created:
  *   5/28/2020, 4:41:23 PM
  * Last edited:
- *   5/29/2020, 1:27:58 AM
+ *   5/29/2020, 1:02:19 PM
  * Auto updated?
  *   Yes
  *
@@ -45,8 +45,6 @@ static std::map<UnitType, const int> type_to_radius = {
  */
 class Unit: public GameObject {
     protected:
-        Coord speed;
-
         /*! Creates the unit with the default Coord values. Only the radius needs to be specified.
           @param radius the radius of the unit
           @param layer the layer in which to order the GameObjects. Higher means it will be drawn on top of lower layers.
@@ -70,6 +68,7 @@ class Unit: public GameObject {
         {}
 
     public:
+        Coord speed;
         const UnitType unit_type;
         const int radius;
 

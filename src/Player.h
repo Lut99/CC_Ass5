@@ -1,9 +1,12 @@
 #ifndef PLAYER_INCLUDED
 #define PLAYER_INCLUDED
 
+#include <string>
+
 #include "Unit.h"
 #include "MySDL.h"
 #include "Coord.h"
+#include "FlavourText.h"
 
 /*! The object representing the player in VirusGame
  */
@@ -12,15 +15,23 @@ class Player: public Unit
     private:
         /*! The charge level of the player's inner colour. If that reaches 1, he wins the game!
          */
-        double charge;
+        int charge;
+        /*! The amount of charge the player obtains when eating a good virus
+         */
+        int charge_add;
+        /*! The amount of charge the player loses when eating an evil virus
+         */
+        int charge_min;
 
     public:
         /*! Creates the Player. Note that it lives on layer 10, and is only really supposed to be overwritten by text and fireworks.
           @param pos start position
         */
-        Player(Coord pos) :
+        Player(Coord pos, int good_charge = 0.05, int evil_charge = 0.15) :
             Unit(pos, Coord(0, 0), UnitType::player, 10),
-            charge(0.0)
+            charge(0.0),
+            charge_add(good_charge),
+            charge_min(evil_charge)
         {}
 
         /*! Updates the gameobject. Particularly, it allows the object to do
@@ -53,28 +64,36 @@ class Player: public Unit
 
             // Eat other units
             for (auto& obj : objects.get_objects()) {
-                // Skip all non-unit objects
-                if (obj->type != GameObjectType::unit) { continue; }
+                // Skip all non-unit, non-virus objects
+                if (this == obj || obj->type != GameObjectType::unit) { continue; }
 
                 // Cast to unit
-                Unit* unit = (Unit*) obj;
 
-                // For all non-virus objects
-                if (unit->unit_type == UnitType::virus) {
-                    if (this->distance_to(*unit) <= this->radius + unit->radius) {
-                        // They touched
-                        this->charge += 0.05;
-                        objects.despawn(unit);
+                // For all virus objects, check if we hit 'em
+                Unit* unit = (Unit*) obj;
+                if (this->distance_to(*unit) <= this->radius + unit->radius) {
+                    // Either get points or lose 'em
+                    if (unit->unit_type == UnitType::virus) {
+                        this->charge += this->charge_add;
+                    } else if (unit->unit_type == UnitType::evil_virus) {
+                        this->charge += -this->charge_min;
                     }
+
+                    // Either case, remove the virus as we ate it
+                    objects.despawn(unit);
+
+                    // Show a popup that displays this change
+                    std::string to_disp = std::to_string(this->charge);
+                    if (this->charge >= 0) {
+                        to_disp += "/100";
+                    } else {
+                        to_disp += "/-100";
+                    }
+
+                    // Spawn such an object
+                    objects.spawn((GameObject*) new FlavourText(mySDL, this->pos, to_disp));
                 }
             }
-        }
-
-        /*! Substracts charge from the player when it is hit
-          @param damage the amount of charge to subtract
-         */
-        void hit(double damage) {
-            this->charge -= damage;
         }
 
         /*! Draws the Player
@@ -84,9 +103,9 @@ class Player: public Unit
             // Chose the color based on the charge
             Color c;
             if (charge >= 0) {
-                c = color(0, 255 * this->charge, 0);
+                c = color(0, 255 * (this->charge / 100.0), 0);
             } else {
-                c = color(255 * (-this->charge), 0, 0);
+                c = color(255 * (-this->charge / 100.0), 0, 0);
             }
 
             // Draw the player
@@ -96,7 +115,7 @@ class Player: public Unit
 
         /*! Returns the charge the player has collected
          */
-        double get_charge() const {
+        int get_charge() const {
             return this->charge;
         }
 };

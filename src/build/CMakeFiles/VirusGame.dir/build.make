@@ -91,6 +91,7 @@ VirusGame_EXTERNAL_OBJECTS =
 VirusGame: CMakeFiles/VirusGame.dir/VirusGame.cpp.o
 VirusGame: CMakeFiles/VirusGame.dir/build.make
 VirusGame: /usr/lib/x86_64-linux-gnu/libSDL2_gfx.so
+VirusGame: /usr/lib/x86_64-linux-gnu/libSDL2_ttf.so
 VirusGame: /usr/lib/x86_64-linux-gnu/libSDL2main.a
 VirusGame: /usr/lib/x86_64-linux-gnu/libSDL2.so
 VirusGame: CMakeFiles/VirusGame.dir/link.txt

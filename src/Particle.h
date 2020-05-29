@@ -4,7 +4,7 @@
  * Created:
  *   5/28/2020, 10:15:23 PM
  * Last edited:
- *   5/29/2020, 1:31:00 AM
+ *   5/29/2020, 3:57:13 PM
  * Auto updated?
  *   Yes
  *
@@ -42,7 +42,7 @@ class Particle: public GameObject {
           @param lifetime the number of frames the particle gets to live
           @param layer the layer in which to order the GameObjects. Higher means it will be drawn on top of lower layers.
          */
-        Particle(ParticleType type, double size, unsigned int lifetime = 0)
+        Particle(ParticleType type, double size = 5, unsigned int lifetime = 60, unsigned int layer = 0)
             : GameObject(GameObjectType::particle, layer),
             size(size),
             lifetime(lifetime),
@@ -57,7 +57,7 @@ class Particle: public GameObject {
           @param lifetime the number of frames the particle gets to live
           @param layer the layer in which to order the GameObjects. Higher means it will be drawn on top of lower layers.
          */
-        Particle(Coord position, ParticleType type, double size, unsigned int lifetime, unsigned int layer = 0)
+        Particle(Coord position, ParticleType type, double size = 5, unsigned int lifetime = 60, unsigned int layer = 0)
             : GameObject(position, GameObjectType::particle, layer),
             size(size),
             lifetime(lifetime),
@@ -73,7 +73,7 @@ class Particle: public GameObject {
           @param lifetime the number of frames the particle gets to live
           @param layer the layer in which to order the GameObjects. Higher means it will be drawn on top of lower layers.
          */
-        Particle(Coord position, Coord speed, ParticleType type, double size, unsigned int lifetime, unsigned int layer = 0)
+        Particle(Coord position, Coord speed, ParticleType type, double size = 5, unsigned int lifetime = 60, unsigned int layer = 0)
             : GameObject(position, GameObjectType::particle, layer),
             speed(speed),
             size(size),

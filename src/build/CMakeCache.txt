@@ -208,6 +208,18 @@ SDL2_NO_DEFAULT_PATH:BOOL=OFF
 //Custom SDL2 Library path
 SDL2_PATH:STRING=
 
+//Where the SDL2_ttf headers can be found
+SDL2_TTF_INCLUDE_DIR:PATH=/usr/include/SDL2
+
+//Where the SDL2_ttf Library can be found
+SDL2_TTF_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libSDL2_ttf.so
+
+//Disable search SDL2_ttf Library in default path
+SDL2_TTF_NO_DEFAULT_PATH:BOOL=OFF
+
+//Custom SDL2_ttf Library path
+SDL2_TTF_PATH:STRING=
+
 //Path to a file.
 SYSTEM_INCLUDE_DIR:PATH=/usr/include
 
@@ -369,6 +381,8 @@ CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 FIND_PACKAGE_MESSAGE_DETAILS_SDL2:INTERNAL=[/usr/lib/x86_64-linux-gnu/libSDL2.so][/usr/include/SDL2][v2.0.8()]
 //Details about finding SDL2_gfx
 FIND_PACKAGE_MESSAGE_DETAILS_SDL2_gfx:INTERNAL=[/usr/lib/x86_64-linux-gnu/libSDL2_gfx.so][/usr/include/SDL2][v1.0.4()]
+//Details about finding SDL2_ttf
+FIND_PACKAGE_MESSAGE_DETAILS_SDL2_ttf:INTERNAL=[/usr/lib/x86_64-linux-gnu/libSDL2_ttf.so][/usr/include/SDL2][v2.0.14()]
 //Details about finding SDL2main
 FIND_PACKAGE_MESSAGE_DETAILS_SDL2main:INTERNAL=[/usr/lib/x86_64-linux-gnu/libSDL2main.a][/usr/include/SDL2][v2.0.8()]
 //ADVANCED property for variable: SDL2MAIN_LIBRARY
@@ -389,4 +403,12 @@ SDL2_LIBRARY-ADVANCED:INTERNAL=1
 SDL2_NO_DEFAULT_PATH-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: SDL2_PATH
 SDL2_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: SDL2_TTF_INCLUDE_DIR
+SDL2_TTF_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: SDL2_TTF_LIBRARY
+SDL2_TTF_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: SDL2_TTF_NO_DEFAULT_PATH
+SDL2_TTF_NO_DEFAULT_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: SDL2_TTF_PATH
+SDL2_TTF_PATH-ADVANCED:INTERNAL=1
 

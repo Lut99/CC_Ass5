@@ -8,8 +8,16 @@
 
 /home/lut_99/UvA/C++/Ass5/src/Coord.h
 
+/home/lut_99/UvA/C++/Ass5/src/EndText.h
+string
+-
+Text.h
+/home/lut_99/UvA/C++/Ass5/src/Text.h
+
 /home/lut_99/UvA/C++/Ass5/src/EvilVirus.h
 iostream
+-
+map
 -
 MySDL.h
 /home/lut_99/UvA/C++/Ass5/src/MySDL.h
@@ -24,6 +32,12 @@ Player.h
 MinParticle.h
 /home/lut_99/UvA/C++/Ass5/src/MinParticle.h
 
+/home/lut_99/UvA/C++/Ass5/src/FlavourText.h
+string
+-
+Text.h
+/home/lut_99/UvA/C++/Ass5/src/Text.h
+
 /home/lut_99/UvA/C++/Ass5/src/GameObject.h
 vector
 -
@@ -37,6 +51,8 @@ Coord.h
 /home/lut_99/UvA/C++/Ass5/src/Coord.h
 
 /home/lut_99/UvA/C++/Ass5/src/GameState.h
+iostream
+-
 vector
 -
 map
@@ -69,16 +85,32 @@ Coord.h
 /home/lut_99/UvA/C++/Ass5/src/Coord.h
 
 /home/lut_99/UvA/C++/Ass5/src/Player.h
+string
+-
 Unit.h
 /home/lut_99/UvA/C++/Ass5/src/Unit.h
 MySDL.h
 /home/lut_99/UvA/C++/Ass5/src/MySDL.h
 Coord.h
 /home/lut_99/UvA/C++/Ass5/src/Coord.h
+FlavourText.h
+/home/lut_99/UvA/C++/Ass5/src/FlavourText.h
 
 /home/lut_99/UvA/C++/Ass5/src/PlusParticle.h
 Particle.h
 /home/lut_99/UvA/C++/Ass5/src/Particle.h
+
+/home/lut_99/UvA/C++/Ass5/src/Text.h
+string
+-
+SDL2/SDL_ttf.h
+-
+GameObject.h
+/home/lut_99/UvA/C++/Ass5/src/GameObject.h
+Coord.h
+/home/lut_99/UvA/C++/Ass5/src/Coord.h
+MySDL.h
+/home/lut_99/UvA/C++/Ass5/src/MySDL.h
 
 /home/lut_99/UvA/C++/Ass5/src/Unit.h
 map
@@ -117,6 +149,8 @@ PlusParticle.h
 /home/lut_99/UvA/C++/Ass5/src/VirusGame.cpp
 algorithm
 -
+SDL2/SDL_ttf.h
+-
 GameState.h
 /home/lut_99/UvA/C++/Ass5/src/GameState.h
 Utils.h
@@ -133,4 +167,6 @@ Virus.h
 /home/lut_99/UvA/C++/Ass5/src/Virus.h
 EvilVirus.h
 /home/lut_99/UvA/C++/Ass5/src/EvilVirus.h
+EndText.h
+/home/lut_99/UvA/C++/Ass5/src/EndText.h
 

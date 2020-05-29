@@ -50,6 +50,21 @@ class Virus: public Unit
                 objects.despawn(this);
             }
 
+            // Bounce off other virusses
+            for (GameObject* obj : objects.get_objects()) {
+                // Skip all non-virusses & itself
+                if (this == obj || obj->type != GameObjectType::unit || ((Unit*) obj)->unit_type == UnitType::player) { continue; }
+                
+                // Make sure they are touching each other
+                Unit* unit = (Unit*) obj;
+                if (this->distance_to(*unit) <= this->radius + unit->radius) {
+                    // Compute the normal (quick 'n' dirty) and set it as our own speed
+                    Coord normal = unit->point_to(*this);
+                    this->speed.x += normal.x;
+                    this->speed.y += normal.y;
+                }
+            }
+
             // Once every particle_interval frames, spawn a plus particle
             if (frame_count == particle_interval) {
                 // Generate a randomized, normalized speed
